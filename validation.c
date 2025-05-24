@@ -1,4 +1,3 @@
-// validation.c
 #include <stdio.h>
 #include <string.h>
 #include <direct.h>
@@ -44,11 +43,8 @@ void write_output(const char* filename, WordFreq* words, int k, double time_ms) 
     }
     // Tulis waktu dalam format presisi tinggi
     fprintf(file, "Waktu untuk mengurutkan:\n");
-    fprintf(file, "  %.6f milidetik\n", time_ms);
-    fprintf(file, "  %.6f detik\n", time_ms / 1000.0);
-    if (time_ms >= 60000.0) {
-        fprintf(file, "  %.6f menit\n", time_ms / (1000.0 * 60.0));
-    }
+    fprintf(file, "  %.6f ms\n", time_ms);
+    fprintf(file, "  %.6f s\n", time_ms / 1000.0);
 
     fclose(file);
     printf("File %s berhasil dibuat!\n", filename);
@@ -61,9 +57,6 @@ void display_output(WordFreq* words, int k, double time_ms) {
     }
     // Tampilkan waktu dalam format presisi tinggi
     printf("Waktu untuk mengurutkan:\n");
-    printf("  %.6f milidetik\n", time_ms);
-    printf("  %.6f detik\n", time_ms / 1000.0);
-    if (time_ms >= 60000.0) {
-        printf("  %.6f menit\n", time_ms / (1000.0 * 60.0));
-    }
+    printf("  %.6f ms\n", time_ms);
+    printf("  %.6f s\n", time_ms / 1000.0);
 }
