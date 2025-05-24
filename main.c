@@ -1,4 +1,3 @@
-// main.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -115,9 +114,31 @@ int main() {
                     continue;
                 }
 
-                display_output(sorted_words, k, time_ms);
+                // Filter entri dengan frekuensi > 0
+                int non_zero_count = 0;
+                for (int i = 0; i < k; i++) {
+                    if (sorted_words[i].freq > 0) {
+                        non_zero_count++;
+                    }
+                }
+                WordFreq* filtered_words = malloc(non_zero_count * sizeof(WordFreq));
+                if (!filtered_words) {
+                    printf("Error: Gagal mengalokasikan memori untuk filtered_words!\n");
+                    free(sorted_words);
+                    continue;
+                }
+                int j = 0;
+                for (int i = 0; i < k; i++) {
+                    if (sorted_words[i].freq > 0) {
+                        filtered_words[j] = sorted_words[i];
+                        j++;
+                    }
+                }
+
+                display_output(filtered_words, non_zero_count, time_ms);
                 snprintf(output_file, MAX_FILENAME_LENGTH, "output/top_%d_words_%s.txt", k, dataset);
-                write_output(output_file, sorted_words, k, time_ms);
+                write_output(output_file, filtered_words, non_zero_count, time_ms);
+                free(filtered_words);
                 free(sorted_words);
             } else {
                 // Salin array untuk sorting
@@ -142,7 +163,29 @@ int main() {
                 end = clock();
                 time_ms = ((double)(end - start) * 1000.0) / CLOCKS_PER_SEC;
 
-                write_output(output_file, sorted_words, k, time_ms);
+                // Filter entri dengan frekuensi > 0
+                int non_zero_count = 0;
+                for (int i = 0; i < k; i++) {
+                    if (sorted_words[i].freq > 0) {
+                        non_zero_count++;
+                    }
+                }
+                WordFreq* filtered_words = malloc(non_zero_count * sizeof(WordFreq));
+                if (!filtered_words) {
+                    printf("Error: Gagal mengalokasikan memori untuk filtered_words!\n");
+                    free(sorted_words);
+                    continue;
+                }
+                int j = 0;
+                for (int i = 0; i < k; i++) {
+                    if (sorted_words[i].freq > 0) {
+                        filtered_words[j] = sorted_words[i];
+                        j++;
+                    }
+                }
+
+                write_output(output_file, filtered_words, non_zero_count, time_ms);
+                free(filtered_words);
                 free(sorted_words);
             }
         }
